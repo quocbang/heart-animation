@@ -5,6 +5,9 @@ body {
 	background: #2c3e50
 }
 
+.active {
+  opacity: 0;
+}
 .input-color {
 	display: flex;
 	position:absolute;

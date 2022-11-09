@@ -24,7 +24,7 @@ canvas {
  <BODY>
   <div class="input-color">
     <label>Nhập mã màu bạn muốn hiện thị : </label>
-    <input type="text" id="color" name="color" value="#fff" onchange="changeColor()">
+    <input type="text" id="color" name="color" value="" onchange="changeColor()">
   </div>
   <div class="box">
     <canvas id="pinkboard"></canvas>    
@@ -39,15 +39,14 @@ canvas {
     size:      8, // particle size in pixels
   },
 };
-var colorFull = document.getElementById("color").value;
-function changeColor(colorFull) {    
-  colorFull = document.getElementById("color").value;
-  alert(colorFull);
-}
-alert("asaasa",colorFull);
+var colorFull = '#9df9ef';
+
+// function changeColor() {    
+//   colorFull = document.getElementById("color").value;
+// }
 /*
  */
-// (function(){var b=0;var c=["ms","moz","webkit","o"];for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime();var f=Math.max(0,16-(d-b));var g=window.setTimeout(function(){h(d+f)},f);b=d+f;return g}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)}}}());
+(function(){var b=0;var c=["ms","moz","webkit","o"];for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime();var f=Math.max(0,16-(d-b));var g=window.setTimeout(function(){h(d+f)},f);b=d+f;return g}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)}}}());
 /*
  * Point class
  */
@@ -176,32 +175,35 @@ var ParticlePool = (function() {
 /*
  * Putting it all together
  */
-(function(canvas,color1) {
-  var context = canvas.getContext('2d'),
-      particles = new ParticlePool(settings.particles.length),
-      particleRate = settings.particles.length / settings.particles.duration, // particles/sec
-      time;
- 
-  // get point on heart with -PI <= t <= PI
+ function changeColor() {
+  document.getElementsByClassName('input-color');
+  colorFull = document.getElementById("color").value;
+  (function(canvas,color1) {
+    var context = canvas.getContext('2d'),
+    particles = new ParticlePool(settings.particles.length),
+    particleRate = settings.particles.length / settings.particles.duration, // particles/sec
+    time;
+    
+    // get point on heart with -PI <= t <= PI
   function pointOnHeart(t) {
     return new Point(
       160 * Math.pow(Math.sin(t), 3),
       130 * Math.cos(t) - 50 * Math.cos(2 * t) - 20 * Math.cos(3 * t) - 10 * Math.cos(4 * t) + 25
-    );
-  }
- 
-  // creating the particle image using a dummy canvas
-  var image = (function() {
-    var canvas  = document.createElement('canvas'),
-        context = canvas.getContext('2d');
-    var color = document.getElementById('color').value;
-    canvas.width  = settings.particles.size;
-    canvas.height = settings.particles.size;
-    // helper function to create the path
-    function to(t) {
-      var point = pointOnHeart(t);
-      point.x = settings.particles.size / 2 + point.x * settings.particles.size / 350;
-      point.y = settings.particles.size / 2 - point.y * settings.particles.size / 350;
+      );
+    }
+    
+    // creating the particle image using a dummy canvas
+    var image = (function() {
+      var canvas  = document.createElement('canvas'),
+      context = canvas.getContext('2d');
+      var color = document.getElementById('color').value;
+      canvas.width  = settings.particles.size;
+      canvas.height = settings.particles.size;
+      // helper function to create the path
+      function to(t) {
+        var point = pointOnHeart(t);
+        point.x = settings.particles.size / 2 + point.x * settings.particles.size / 350;
+        point.y = settings.particles.size / 2 - point.y * settings.particles.size / 350;
       return point;
     }
     // create the path
@@ -228,20 +230,20 @@ var ParticlePool = (function() {
     image.src = canvas.toDataURL();
     return image;
   })();
- 
+  
   // render that thing!
   function render() {
     // next animation frame
     requestAnimationFrame(render);
-   
+    
     // update time
     var newTime   = new Date().getTime() / 1000,
-        deltaTime = newTime - (time || newTime);
+    deltaTime = newTime - (time || newTime);
     time = newTime;
-   
+    
     // clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
-   
+    
     // create new particles
     var amount = particleRate * deltaTime;
     for (var i = 0; i < amount; i++) {
@@ -249,19 +251,19 @@ var ParticlePool = (function() {
       var dir = pos.clone().length(settings.particles.velocity);
       particles.add(canvas.width / 2 + pos.x, canvas.height / 2 - pos.y, dir.x, -dir.y);
     }
-   
+    
     // update and draw particles
     particles.update(deltaTime);
     particles.draw(context, image);
   }
- 
+  
   // handle (re-)sizing of the canvas
   function onResize() {
     canvas.width  = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
   }
   window.onresize = onResize;
- 
+  
   // delay rendering bootstrap
   setTimeout(function() {
     onResize();
@@ -269,7 +271,8 @@ var ParticlePool = (function() {
   }, 10);
 })(document.getElementById('pinkboard'),colorFull);
 
-  </script>
+}
+</script>
 
- </BODY>
+</BODY>
 </HTML>
