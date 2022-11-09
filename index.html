@@ -22,7 +22,7 @@ canvas {
   </style>  
  </HEAD>
  <BODY>
-  <div class="input-color">
+  <div id="input-color">
     <label>Nhập mã màu bạn muốn hiện thị : </label>
     <input type="text" id="color" name="color" value="" onchange="changeColor()">
   </div>
@@ -176,7 +176,8 @@ var ParticlePool = (function() {
  * Putting it all together
  */
  function changeColor() {
-  document.getElementsByClassName('input-color');
+  var a = document.getElementById("input-color");
+  a.classList.add("active");
   colorFull = document.getElementById("color").value;
   (function(canvas,color1) {
     var context = canvas.getContext('2d'),
